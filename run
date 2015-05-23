@@ -13,15 +13,11 @@ class Diff
   end
 
   def additions
-    @union.select do |elem|
-      not @old_array.include? elem and @new_array.include? elem
-    end
+    @new_array - @old_array
   end
 
   def removals
-    @union.select do |elem|
-      @old_array.include? elem and not @new_array.include? elem
-    end
+    @old_array - @new_array
   end
 
   def pretty_print
