@@ -1,0 +1,5 @@
+---
+# This access token must have the "write:org" permission for the
+# organisation you want to modify.
+org: example_github_org
+access_token: example_token
