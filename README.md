@@ -10,3 +10,9 @@ Create configuration files in the `config/` directory.
 bundle install
 ./run
 ```
+
+## Testing
+
+```
+bundle exec rspec
+```

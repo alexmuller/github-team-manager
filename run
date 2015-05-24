@@ -1,37 +1,9 @@
 #!/usr/bin/env ruby
 
-require 'colorize'
 require 'octokit'
 require 'yaml'
 
-class Diff
-  def initialize(old_array, new_array)
-    @old_array = old_array
-    @new_array = new_array
-    @union = @old_array | @new_array
-    @union.sort_by! { |elem| elem.downcase }
-  end
-
-  def additions
-    @new_array - @old_array
-  end
-
-  def removals
-    @old_array - @new_array
-  end
-
-  def pretty_print
-    @union.map do |elem|
-      if additions.include? elem
-        elem = "+ #{elem}".colorize(:green)
-      elsif removals.include? elem
-        elem = "- #{elem}".colorize(:red)
-      else
-        elem = "  #{elem}"
-      end
-    end
-  end
-end
+require './lib/array_diff'
 
 config = YAML.load_file('config/config.yaml')
 
@@ -43,7 +15,7 @@ current_owners = client.team_members(owners_team.id).map { |user| user.login }
 
 requested_owners = YAML.load_file('config/owners.yaml')['owners']
 
-diff = Diff.new(current_owners, requested_owners)
+diff = ArrayDiff.new(current_owners, requested_owners)
 
 puts "Updating owners:"
 puts diff.pretty_print
