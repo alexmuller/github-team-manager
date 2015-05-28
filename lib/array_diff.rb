@@ -1,11 +1,9 @@
-require 'colorize'
+require 'diffy'
 
 class ArrayDiff
   def initialize(old_array, new_array)
     @old_array = old_array
     @new_array = new_array
-    @union = @old_array | @new_array
-    @union.sort_by! { |elem| elem.downcase }
   end
 
   def additions
@@ -17,14 +15,16 @@ class ArrayDiff
   end
 
   def pretty_print
-    @union.map do |elem|
-      if additions.include? elem
-        elem = "+ #{elem}".colorize(:green)
-      elsif removals.include? elem
-        elem = "- #{elem}".colorize(:red)
-      else
-        elem = "  #{elem}"
-      end
-    end
+    diff = Diffy::Diff.new(
+      list(@old_array),
+      list(@new_array),
+    )
+    diff.to_s(:color)
+  end
+
+  private
+
+  def list(array)
+    array.join("\n") + "\n"
   end
 end
