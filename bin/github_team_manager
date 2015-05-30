@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'github_team_manager'
+
+GitHubTeamManager.manage 'config/config.yaml', 'config/owners.yaml'
