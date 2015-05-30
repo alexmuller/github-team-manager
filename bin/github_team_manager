@@ -2,4 +2,4 @@
 
 require 'github_team_manager'
 
-GitHubTeamManager.manage 'config/config.yaml', 'config/owners.yaml'
+GitHubTeamManager.manage ENV['GITHUB_TOKEN'], 'config/config.yaml', 'config/owners.yaml'

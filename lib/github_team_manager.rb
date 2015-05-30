@@ -3,10 +3,16 @@ require 'octokit'
 require 'yaml'
 
 class GitHubTeamManager
-  def self.manage config_file, owners_file
+  def self.manage github_token, config_file, owners_file
     config = YAML.load_file(config_file)
 
-    client = Octokit::Client.new(access_token: config['access_token'])
+    if github_token
+      access_token = github_token
+    else
+      access_token = config['access_token']
+    end
+
+    client = Octokit::Client.new(access_token: access_token)
 
     owners_team = client.org_teams(config['org']).find do |team|
       team.name == 'Owners'
