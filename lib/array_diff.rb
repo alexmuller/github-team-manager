@@ -4,6 +4,14 @@ class ArrayDiff
   def initialize(old_array, new_array)
     @old_array = old_array
     @new_array = new_array
+    @diff = Diffy::Diff.new(
+      list(@old_array),
+      list(@new_array),
+    )
+  end
+
+  def has_differences?
+    @diff.each.any?
   end
 
   def additions
@@ -15,11 +23,7 @@ class ArrayDiff
   end
 
   def pretty_print
-    diff = Diffy::Diff.new(
-      list(@old_array),
-      list(@new_array),
-    )
-    diff.to_s(:color)
+    @diff.to_s(:color)
   end
 
   private
